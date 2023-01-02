@@ -1,0 +1,93 @@
+﻿@model List<ProductDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                BuyPrice
+            </th>
+            <th>
+                SellPrice
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                CategoryName
+            </th>
+            <th>
+                ProductCode
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Image saved in DB
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BuyPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+       
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                    {
+                        <img src="@item.ImagePath" width="200" class="img-fluid" />
+                    }
+                </td>
+                <td>
+                    @if (item.ImageContent.Length > 0)
+                    {
+                        var base64 = Convert.ToBase64String(item.ImageContent);
+                        var Image = String.Format("data:{0};base64,{1}", item.ImageMimeType, base64);
+                        <img src="@Image" width="200" class="img-fluid" />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
